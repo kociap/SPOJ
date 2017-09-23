@@ -8,12 +8,12 @@ using int64 = long long;
 using int32 = int;
 
 struct PrimeFactor {
-	uint32 prime;
-	uint32 primeCount;
-	uint32 factor; // prime ^ primeCount
+    uint32 prime;
+    uint32 primeCount;
+    uint32 factor; // prime ^ primeCount
 
-	PrimeFactor(const uint32& _prime, const uint32& _primeCount, const uint32& _factor);
-	PrimeFactor(const uint32& _prime, const uint32& _primeCount);
+    PrimeFactor(const uint32& _prime, const uint32& _primeCount, const uint32& _factor);
+    PrimeFactor(const uint32& _prime, const uint32& _primeCount);
 };
 
 int64 eulersTotient(PrimeFactor n);
