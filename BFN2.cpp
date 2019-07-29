@@ -45,7 +45,7 @@ int main() {
 
 inline void eratoshtenesSieve(vector<uint32>& primes, const uint32 maxPrime) {
     uint32 maxPrimeSqrt = static_cast<uint32>(sqrt(maxPrime));
-    vector<bool> isPrime(maxPrime + 1, true);
+    vector<char> isPrime(maxPrime + 1, true);
 
     for (uint32 i = 3; i <= maxPrimeSqrt; i += 2) {
         if (isPrime[i]) {
@@ -67,7 +67,7 @@ inline void sieveSegment(const vector<uint32>& precomputedPrimes, const uint32 b
     uint32 segmentSize = end - begin + 1;
 
     // Sieved segment
-    vector<bool> segment(segmentSize, true);
+    vector<char> segment(segmentSize, true);
 
     // Index of first occurences of a primes' multiples in the given interval
     vector<uint32> firstOccurence(precomputedPrimes.size(), 0);
