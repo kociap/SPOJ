@@ -21,8 +21,8 @@ struct Input_Buffer {
     }
 
     bool read_i64(i64& v) {
-        if(end - i < 30) {
-            i64 remaining = end - i;
+        i64 const remaining = end - i;
+        if(remaining < 30) {
             char* b = i;
             i = buf;
             while(b != end) {
@@ -37,7 +37,7 @@ struct Input_Buffer {
             *end = EOF;
         }
 
-        while((*i > '9' | *i < '0') & *i != EOF) {
+        while((*i < '0' | *i > '9') & (*i != EOF)) {
             ++i;
         }
 
@@ -47,8 +47,7 @@ struct Input_Buffer {
         
         v = 0;
         while(*i >= '0' & *i <= '9') {
-            v *= 10;
-            v += *i - '0';
+            v = 10 * v + *i - '0';
             ++i;
         }
 
@@ -112,14 +111,16 @@ private:
     }
 };
 
+#define TERNARY_TRIBITS 20
+
 struct Ternary_i64 {
 private:
     char control = 1;
-    char bits[41];
+    char bits[TERNARY_TRIBITS];
 
 public:
     Ternary_i64(i64 v) {
-        for(i64 i = 0; i < 41; ++i) {
+        for(i64 i = 0; i < TERNARY_TRIBITS; ++i) {
             bits[i] = v % 3;
             v /= 3;
         }
@@ -127,7 +128,7 @@ public:
 
     void ternary_xor(Ternary_i64 const& rhs) {
         control = (control + rhs.control) % 3;
-        for(i64 i = 0; i < 41; ++i) {
+        for(i64 i = 0; i < TERNARY_TRIBITS; ++i) {
             bits[i] = (bits[i] + rhs.bits[i]) % 3;
         }
     }
@@ -135,12 +136,12 @@ public:
     i64 to_i64() {
         i64 v = 0;
         if(control == 2) {
-            for(i64 i = 40; i > -1; --i) {
+            for(i64 i = TERNARY_TRIBITS - 1; i > -1; --i) {
                 v *= 3;
                 v += bits[i];
             }
         } else {
-            for(i64 i = 40; i > -1; --i) {
+            for(i64 i = TERNARY_TRIBITS - 1; i > -1; --i) {
                 v *= 3;
                 v += (bits[i] + bits[i]) % 3;
             }
